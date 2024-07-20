@@ -56,8 +56,8 @@ The project is divided into several key components:
 1. **Clone the Repository**
 
    ```sh
-   git clone git@github.com:YourUsername/Social-Network-Platform.git
-   cd Social-Network-Platform
+   git clone git@github.com:YourUsername/All-Chat.git
+   cd All-Chat
     ``
 2. **Set Up the Backend**
 
@@ -99,4 +99,3 @@ The project is divided into several key components:
 
 ### Containerization
 Once the application is ready for deployment, it will be containerized using Docker. Instructions for building and running Docker containers will be provided at that time.
-
