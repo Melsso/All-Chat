@@ -1,6 +1,6 @@
 # Social Network Platform
 
-Welcome to the Social Network Platform project! This project aims to create a fully functional social networking website where users can create accounts, log in, view other people's posts, add friends, and chat with friends. This platform will be developed with a focus on both frontend and backend technologies, ensuring a seamless user experience and robust backend support.
+Welcome to the All-Chat project! This project aims to create a fully functional social networking website where users can create accounts, log in, view other people's posts, add friends, and chat with friends. This platform will be developed with a focus on both frontend and backend technologies, ensuring a seamless user experience and robust backend support.
 
 ## Features
 
