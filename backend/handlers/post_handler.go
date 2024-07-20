@@ -11,28 +11,23 @@ import (
 )
 
 func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
-    // Get user ID from session (you'll need to implement this part)
     session, _ := utils.Store.Get(r, "session")
     userID, ok := session.Values["user_id"].(int)
     if !ok {
         http.Error(w, "Forbidden", http.StatusForbidden)
         return
     }
-    // Assuming you're sending the post content in the request body as JSON
     var post models.Post
     if err := json.NewDecoder(r.Body).Decode(&post); err != nil {
         http.Error(w, err.Error(), http.StatusBadRequest)
         return
     }
-    // Set other fields for the post
     post.UserID = userID
     post.CreatedAt = time.Now()
-    // Save the post to the database
     if err := datab.CreatePost(&post); err != nil {
         http.Error(w, err.Error(), http.StatusInternalServerError)
         return
     }
-    // Respond with the newly created post data
     utils.JsonResponse(w, http.StatusCreated, post)
 }
 

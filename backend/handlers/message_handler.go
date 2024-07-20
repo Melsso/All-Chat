@@ -42,7 +42,6 @@ func MessageHandler(w http.ResponseWriter, r * http.Request) {
 		if messages == nil {
 			messages = []models.Message{}
 		}
-		// fetch old messages if they exist and return them in the request reply
 		response := map[string]interface{}{
             "conversation_id": convID,
             "messages":        messages,

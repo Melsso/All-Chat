@@ -52,12 +52,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
     session, _ := utils.Store.Get(r, "session")
 
-    // Remove all session data
     session.Options.MaxAge = -1 // MaxAge<0 means delete cookie now
     session.Save(r, w)
 	w.Header().Set("Cache-Control", "no-store")
     w.Header().Set("Pragma", "no-cache")
     w.Header().Set("Expires", "0")
-    // Redirect to a login page or another appropriate location
     http.Redirect(w, r, "/login.html", http.StatusSeeOther)
 }

@@ -53,7 +53,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid date format for date of birth", http.StatusBadRequest)
 		return
 	}
-	regForm.DateOfBirth = dob.Format("2006-01-02") // Ensure it's in correct format for MySQL DATE type
+	regForm.DateOfBirth = dob.Format("2006-01-02")
 
 
 	result, err := datab.InsertUser(regForm)
