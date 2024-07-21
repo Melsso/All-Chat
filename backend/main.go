@@ -13,11 +13,9 @@ func main() {
 	datab.InitDB()
 	defer datab.CloseDB()
 	utils.Init()
-	// Serve static files from the "static" directory
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
-	// Register handlers for specific routes
 	http.HandleFunc("/login", handlers.LoginHandler)
 	http.HandleFunc("/register", handlers.RegisterHandler)
 	http.HandleFunc("/home", handlers.HomeHandler)

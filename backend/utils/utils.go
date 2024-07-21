@@ -25,9 +25,9 @@ func Init() {
     Store = sessions.NewCookieStore([]byte(sessionKey))
     Store.Options = &sessions.Options{
         Path:     "/",
-        MaxAge:   3600, // Session duration in seconds (e.g., 1 hour)
+        MaxAge:   3600,
         HttpOnly: true,
-        Secure:   false, // Set to true if using HTTPS
+        Secure:   false,
         SameSite: http.SameSiteStrictMode,
     }
 }

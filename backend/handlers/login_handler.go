@@ -52,7 +52,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
     session, _ := utils.Store.Get(r, "session")
 
-    session.Options.MaxAge = -1 // MaxAge<0 means delete cookie now
+    session.Options.MaxAge = -1
     session.Save(r, w)
 	w.Header().Set("Cache-Control", "no-store")
     w.Header().Set("Pragma", "no-cache")
