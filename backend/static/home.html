@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Page</title>
+    <link rel="stylesheet" href="/static/homestyles.css">
+</head>
+<body>
+    <div class="container">
+        <aside class="sidebar">
+            <div class="friend-section">
+                <h2>Friend List</h2>
+                <ul class="friend-list" id="friend-list">
+                    <!-- Friend list will be populated here -->
+                </ul>
+                <h2>Friend Requests</h2>
+                <ul class="invite-list" id="invite-list">
+                    <!-- Invite list will be populated here -->
+                </ul>
+            </div>
+            <div class="action-section">
+                <form id="search-form">
+                    <input type="text" id="search-input" placeholder="Enter A Friend's Name">
+                    <button type="submit" class="search-button">Find</button>
+                </form>
+                <section id="search-result">
+                    <!-- Search list will be populated here -->
+                </section>
+            </div>
+            <div class="utility">
+                <a href="/logout" id="logout-link">Logout</a>
+                <button type="submit" id="dark-mode">Dark Mode</button>
+            </div>
+        </aside>
+        <div class="container-main">
+            <div class="post-post">
+                <textarea id="post-post" placeholder="Something On Your Mind?"></textarea>
+                <button id="submit-post">Share</button>
+            </div>
+            <div class="container-carrosel">
+                <div class="carrosel" id="posts">
+                    <!-- Posts will be populated here dynamically -->
+                </div>
+                
+                <section id="comments">
+                    <!-- Comments will be appended here -->
+                </section>
+
+                <div class="button-container">
+                    <button id="like-button">Like</button>
+                    <button id="comment-button">Comments</button>        
+                </div>
+                
+                <textarea id="com-content" placeholder="Add a comment..."></textarea>
+                <button id="submit-comment-button">Submit</button>
+                
+                <button id="carousel-control-prev">&lt;</button>
+                <button id="carousel-control-next">&gt;</button>
+            </div>
+        </div>
+        
+    </div>
+    <div id="message-window-container"></div>
+    <script src="/static/home.js"></script>
+</body>
+</html>

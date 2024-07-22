@@ -1,0 +1,220 @@
+/* Global Styles */
+body {
+    font-family: 'Arial', sans-serif;
+    background: #1a1a1a;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+    color: #eaeaea;
+    margin: 0;
+    padding: 0;
+}
+
+/* Login Page Styles */
+.login-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    background: url('background.jpg') no-repeat center center fixed;
+
+}
+
+.login-box {
+    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+    width: 300px;
+    text-align: center;
+}
+.login-box h2 {
+    margin-bottom: 20px;
+    font-size: 24px;
+    color: #fff;
+}
+
+.login-box .input-group {
+    margin-bottom: 20px;
+}
+
+.login-box label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #bbb;
+}
+
+.login-box input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid #555;
+    border-radius: 5px;
+    background: #333;
+    color: #eaeaea;
+}
+
+.login-box button {
+    width: 100%;
+    padding: 10px;
+    background: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.login-box button:hover {
+    background: #0056b3;
+}
+
+.login-box .register-link {
+    margin-top: 20px;
+}
+
+.login-box .register-button {
+    color: #007BFF;
+    text-decoration: none;
+}
+
+.login-box .register-button:hover {
+    text-decoration: underline;
+}
+
+/* Home Page Styles */
+.container {
+    display: flex;
+    height: 100vh;
+    background: linear-gradient(to right, #141E30, #243B55); /* Gradient background */
+    background: url('background.jpg') no-repeat center center fixed;
+}
+
+.sidebar {
+    width: 20%;
+    background: linear-gradient(to right, rgba(14, 21, 33, 0.7), rgba(24, 39, 58, 0.7)); /* Darker gradient background with transparency */
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar h2 {
+    margin-top: 0;
+    font-size: 24px;
+    color: #fff;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+}
+
+.friend-list {    
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    flex-grow: 1;
+}
+
+.friend {
+    padding: 10px 0;
+    border-bottom: 1px solid #555;
+    cursor: pointer;
+}
+
+.friend:hover {
+    background: #333;
+}
+
+.main-content {
+    width: 100%;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+}
+
+.post-box {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 20px;
+}
+
+.post-box textarea {
+    width: 535%;
+    color: #fff;
+    background: linear-gradient(to right, rgba(14, 21, 33, 0.7), rgba(24, 39, 58, 0.7)); /* Darker gradient background with transparency */
+    border: 1px solid #555;
+    border-radius: 5px;
+    padding: 10px;
+    resize: none;
+}
+
+.post-box button {
+    margin-top: 10px;
+    padding: 10px 20px;
+    background: #007BFF;
+    border: none;
+    border-radius: 5px;
+    color: #fff;
+    cursor: pointer;
+    transition: background 0.3s;
+}
+
+.post-box button:hover {
+    background: #0056b3;
+}
+
+.posts {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+}
+
+.post {
+    background: linear-gradient(to right, rgba(14, 21, 33, 0.7), rgba(24, 39, 58, 0.7)); /* Darker gradient background with transparency */
+    border-radius: 5px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    flex-grow: 1;
+    font-size: 18px;
+    
+}
+
+.post h3 {
+    margin-top: 0;
+    font-size: 20px;
+    border-bottom: 1px solid #555;
+    padding-bottom: 10px;
+}
+
+.post p {
+    margin: 0;
+    font-size: 18px;
+}
+
+.post-meta {
+    display: flex;
+    justify-content: flex-end;
+}
+
+/* CSS Styles for comments */
+.comment {
+    display: flex; /* Use flexbox for layout */
+    align-items: flex-start; /* Align items at the start of the flex container */
+    margin-bottom: 10px; /* Adjust spacing between comments */
+}
+
+.comment-owner {
+    font-weight: bold; /* Make owner's name bold */
+    white-space: nowrap; /* Prevent owner's name from wrapping */
+    text-overflow: ellipsis; /* Show ellipsis (...) if owner's name exceeds container */
+    max-width: calc(100% - 50px); /* Limit the width to container width minus some margin */
+    margin-right: 5px; /* Add some spacing between owner's name and content */
+}
+
+
+.comment-content {
+    flex: 1; /* Expand to fill remaining space */
+    word-wrap: break-word; /* Allow content to wrap if it's too long */
+    max-width: calc(100% - 50px); /* Limit the width to container width minus some margin */
+    overflow-wrap: break-word; /* Ensure that long words break and wrap to the next line */
+}
