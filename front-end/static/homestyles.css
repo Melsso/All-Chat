@@ -1,0 +1,529 @@
+@import url('https://fonts.googleapis.com/css2?family=Roboto:wght@400;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@700&display=swap');
+
+body, html {
+    height: 100%;
+    margin: 0;
+    font-family: 'Roboto', sans-serif;
+    color: #FFFFFF;
+    overflow-x: hidden;
+    background: #1a1a1a;
+    background: url('background.jpg') no-repeat center center fixed;
+    background-size: cover;
+}
+
+body.invert-mode {
+    filter: invert(1);
+}
+
+.container {
+    display: flex;
+    height: 100%;
+    overflow: hidden;
+}
+
+.sidebar {
+    width: 25%;
+    height: 95%;
+    background: linear-gradient(to right, rgba(14, 21, 33, 0.7), rgba(24, 39, 58, 0.7)); 
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+    box-sizing: border-box;
+    margin: 20px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.sidebar .friend-section {
+    overflow-y: auto;
+    height: 50%;
+    border-bottom: solid 1.5px #fff;
+    margin-bottom: 10px;
+}
+
+.sidebar .action-section {
+    overflow-y: auto;
+    height: 40%;
+    border-bottom: solid 1.5px #fff;
+    margin-bottom: 10px;
+}
+
+.sidebar .utility {
+    height: 10%;
+    flex-basis: 30%;
+    overflow-y: auto;
+}
+
+.sidebar h2 {
+    margin-bottom: 10px;
+    font-size: 1.5em;
+    color: #fff;
+    border-top: solid 1.5px #fff;
+    margin-top: 10px;
+}
+
+.sidebar ul {
+    list-style-type: none;
+    padding: 0;
+    color: #fff;
+}
+
+.sidebar ul li {
+    margin-bottom: 10px;
+    position: relative; 
+    padding-right: 40px;
+    font-size: 25px;
+    border: solid 1.5px #9e9e9e;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.3); 
+}
+
+.sidebar ul li button {
+    right: 10px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    padding: 5px; 
+}
+
+.sidebar .message-button {
+    right:10px;
+}
+
+.sidebar .refuse-button {
+    right: 40px;
+}
+
+.sidebar .accept-button {
+    right: 10px;
+}
+
+.sidebar .delete-button {
+    right: 40px;
+}
+.sidebar ul li button:hover {
+    background-color: #0056b3;
+}
+
+.sidebar .add-ser-button {
+    right: 0px;
+}
+
+.sidebar ul li a {
+    text-decoration: none;
+    color: #fff;
+    display: block;
+    padding: 5px;
+    transition: background-color 0.3s ease;
+}
+
+.sidebar ul li a:hover {
+    background-color: #ddd;
+}
+
+.sidebar .search-item {
+    margin-top: 10px;
+    position: relative; 
+    padding-right: 40px;
+    font-size: 20px;
+    border: solid 1.5px #9e9e9e;
+    border-radius: 5px;
+    color: #fff;
+    background: rgba(255, 255, 255, 0.3); 
+}
+
+.sidebar .action-section {
+    position: relative;
+}
+
+.sidebar #search-input {
+    width: 90%;
+    border: solid 1.5px #9e9e9e;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.9); 
+    padding: 15px;
+    font-size: 15px;
+}
+
+.sidebar .search-button {
+    padding: 15px;
+    width: 25%;
+    cursor: pointer;
+    color: #fff;
+    background-color: #007bff;
+    transition: background-color 0.3s ease; 
+    margin-top: 10px;
+    margin-left: 35%;
+    border: none;
+}
+
+.sidebar .search-button:hover {
+    background-color: #0056b3;
+}
+
+.sidebar .search-item .add-ser-button {
+    right: 30px;
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: none;
+    border: none;
+    cursor: pointer;
+    background-color: #007bff;
+    font-size: 1rem;
+    transition: color 0.3s ease;
+    padding: 5px; 
+}
+
+.container-main {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.post-post {
+    width: 80%;
+    margin-bottom: 20px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.post-post textarea {
+    width: 100%;
+    height: 80px;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    margin-bottom: 20px;
+    font-size: 1rem;
+    text-align: center;
+    overflow: auto;
+    word-break: break-word;
+    line-height: 1.6;
+    resize: vertical;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.post-post textarea::placeholder {
+    color: #aaa;
+    text-align: center;
+    line-height: 4;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    resize: vertical;
+    overflow: hidden; 
+    word-break: break-word;
+}
+
+.post-post button {
+    background-color: #007bff;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+}
+
+.post-post button:hover {
+    background-color: #0056b3;
+}
+
+.container-carrosel {
+    position: relative;
+    width: 70%;
+    height: 70%;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.carrosel {
+    display: flex;
+    overflow: hidden;
+    scroll-behavior: smooth;
+    -webkit-overflow-scrolling: touch;
+    width: 100%;
+    height: 100%;
+}
+
+.post {
+    width: 100%;
+    height: 100%;
+    padding: 20px;
+    border-radius: 5px;
+    box-sizing: border-box;
+    border: 1px solid #ccc;
+    background: rgba(255, 255, 255, 0.2);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2);
+
+    align-items: center;
+    text-align: center;
+    position: absolute;
+    top: 0;
+    left: 0;
+    transform-style: preserve-3d;
+    transition: transform 0.5s ease-in-out, opacity 0.5s ease-in-out;
+    opacity: 0;
+    padding: 20px;
+    box-sizing: border-box;
+}
+
+.post.active {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+.post header {
+    position: relative;
+    width: 100%;
+    text-align: center; 
+    margin-bottom: 15px;
+}
+
+/* Center the post owner text */
+.post header h3.post-owner {
+    margin-top: 15px; 
+    display: inline-block; 
+    color: #FFFFFF;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 1.25em;
+}
+
+/* Align the timestamp to the right */
+.post header small {
+    position: absolute;
+    right: 0; 
+    bottom: 0;
+    color: #1a1a1a;
+    font-size: 0.875em;
+    margin-top: 5px;
+}
+
+.post-content {
+    margin-top: 10px;
+    word-break: break-word;
+    overflow-wrap: break-word;
+    width: 100%;
+    padding: 10px;
+    border-radius: 5px;
+    color: #000000;
+    font-size: 1.1em;
+    line-height: 1.6;
+
+}
+
+#carousel-control-prev, #carousel-control-next {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    background: rgba(0, 0, 0, 0.5);
+    color: #fff;
+    border: none;
+    padding: 1rem;
+    cursor: pointer;
+    z-index: 10;
+    font-size: 1.5rem;
+    border-radius: 5px;
+}
+
+#carousel-control-prev {
+    left: 0;
+}
+
+#carousel-control-next {
+    right: 0;
+}
+
+.button-container {
+    margin: 20px;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    z-index: 10;
+}
+
+#like-button, #comment-button, #submit-comment-button {
+    background-color: #007bff;
+    color: #fff;
+    border: none;
+    padding: 0.5rem 1rem;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 1rem;
+    transition: background-color 0.3s ease;
+    z-index: 10;
+}
+
+#like-button:hover, #comment-button:hover, #submit-comment-button:hover {
+    background-color: #0056b3;
+}
+
+#submit-comment-button {
+    margin-bottom: 10px;
+}
+
+#com-content {
+    width: 100%;
+    max-width: 600px;
+    margin: 10px 0;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    box-sizing: border-box;
+    z-index: 10;
+}
+
+#com-content::placeholder {
+    color: #aaa;
+}
+
+#comments {
+    display: none;
+    width: 100%;
+    max-width: 600px;
+    background-color: rgba(255, 255, 255, 0.2);
+    border: 1px solid #ddd;
+    border-radius: 5px;
+    padding: 10px;
+    box-sizing: border-box;
+    margin: 10px 0;
+    overflow-y: auto;
+    overflow-x: hidden;
+    max-height: 200px;
+    z-index: 10;
+}
+
+#comments.displayed {
+    display: block;
+}
+
+.comment {
+    margin-bottom: 10px;
+}
+
+.comment-owner {
+    font-weight: bold;
+    margin-bottom: 5px;
+    color: #FFFFFF; 
+    font-family: 'Orbitron', sans-serif; 
+    font-weight: bold;
+    font-size: 1.1em; 
+}
+
+.comment-content {
+    margin-bottom: 5px;
+    text-align: left;
+    word-break: break-word;
+    color: #000000;
+    font-size: 1em;
+    line-height: 1.6; 
+}
+
+#nocom {
+    color: #777;
+}
+
+.comment-content small {
+    display: block;
+    text-align: right;
+    color: #333333;
+    font-size: 0.65em;
+}
+
+.message-window {
+    position: fixed;
+    right: 0;
+    bottom: 0;
+    width: 300px;
+    height: 400px;
+    background-color: white;
+    border: 1px solid #ccc;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+    display: flex;
+    flex-direction: column;
+    z-index: 1000;
+}
+
+.message-window header {
+    background-color: #f1f1f1;
+    padding: 10px;
+    font-weight: bold;
+    border-bottom: 1px solid #ccc;
+}
+
+.message-container {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+}
+
+.message-window textarea {
+    width: 100%;
+    border: 1px solid #ccc;
+    border-top: none;
+    padding: 10px;
+    box-sizing: border-box;
+}
+
+.message-window button {
+    padding: 10px;
+    border: none;
+    background-color: #007bff;
+    color: white;
+    cursor: pointer;
+}
+
+.message-window button:hover {
+    background-color: #0056b3;
+}
+.utility {
+    display: flex;
+    justify-content: center; 
+    align-items: center;
+    gap: 20px; 
+    height: 100%;
+}
+
+.utility a, .utility button {
+    width: 70px;
+    height: 70px;
+    display: flex;
+    justify-content: center;
+    align-items: center; 
+    background-color: #007bff; 
+    color: white; 
+    text-decoration: none; 
+    border: none;
+    border-radius: 5px;
+    font-size: 1rem;
+    cursor: pointer; 
+    transition: background-color 0.3s ease; 
+}
+
+.utility a:hover, .utility button:hover {
+    background-color: #0056b3;
+}

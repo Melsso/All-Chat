@@ -7,7 +7,7 @@ document.addEventListener('DOMContentLoaded', function() {
 
             const firstName = document.getElementById('first-name').value;
             const lastName = document.getElementById('last-name').value;
-            const dob = document.getElementById('dob').value; // Make sure to format date properly
+            const dob = document.getElementById('dob').value; 
             const email = document.getElementById('email').value;
             const password = document.getElementById('password').value;
             const gender = document.getElementById('gender').value;

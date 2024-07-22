@@ -20,7 +20,7 @@ body {
 }
 
 .login-box {
-    background: rgba(0, 0, 0, 0.7); /* Semi-transparent black */
+    background: rgba(0, 0, 0, 0.7);
     padding: 40px;
     border-radius: 10px;
     box-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
@@ -198,23 +198,23 @@ body {
 
 /* CSS Styles for comments */
 .comment {
-    display: flex; /* Use flexbox for layout */
-    align-items: flex-start; /* Align items at the start of the flex container */
-    margin-bottom: 10px; /* Adjust spacing between comments */
+    display: flex; 
+    align-items: flex-start; 
+    margin-bottom: 10px; 
 }
 
 .comment-owner {
-    font-weight: bold; /* Make owner's name bold */
-    white-space: nowrap; /* Prevent owner's name from wrapping */
-    text-overflow: ellipsis; /* Show ellipsis (...) if owner's name exceeds container */
-    max-width: calc(100% - 50px); /* Limit the width to container width minus some margin */
-    margin-right: 5px; /* Add some spacing between owner's name and content */
+    font-weight: bold; 
+    white-space: nowrap; 
+    text-overflow: ellipsis; 
+    max-width: calc(100% - 50px); 
+    margin-right: 5px; 
 }
 
 
 .comment-content {
-    flex: 1; /* Expand to fill remaining space */
-    word-wrap: break-word; /* Allow content to wrap if it's too long */
-    max-width: calc(100% - 50px); /* Limit the width to container width minus some margin */
-    overflow-wrap: break-word; /* Ensure that long words break and wrap to the next line */
+    flex: 1;
+    word-wrap: break-word;
+    max-width: calc(100% - 50px); 
+    overflow-wrap: break-word; 
 }
