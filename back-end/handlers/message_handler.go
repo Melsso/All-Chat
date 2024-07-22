@@ -1,16 +1,15 @@
 package handlers
 
 import (
-    "net/http"
-    "strconv"
+	"All-Chat/back-end/datab"
 	"fmt"
-    "playground/datab"
-    "playground/utils"
-    "playground/models"
-    /*"time"*/
-)
+	"All-Chat/back-end/models"
+	"net/http"
+	"strconv"
+	"All-Chat/back-end/utils"
+	/*"time"*/)
 
-func MessageHandler(w http.ResponseWriter, r * http.Request) {
+func MessageHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
@@ -19,10 +18,10 @@ func MessageHandler(w http.ResponseWriter, r * http.Request) {
 	}
 	if r.Method == http.MethodGet {
 		friendIDs := r.URL.Query().Get("friend_id")
-        if friendIDs == "" {
-            http.Error(w, "Missing friend_id", http.StatusBadRequest)
-            return
-        }
+		if friendIDs == "" {
+			http.Error(w, "Missing friend_id", http.StatusBadRequest)
+			return
+		}
 		friend_id, err := strconv.Atoi(friendIDs)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -43,15 +42,15 @@ func MessageHandler(w http.ResponseWriter, r * http.Request) {
 			messages = []models.Message{}
 		}
 		response := map[string]interface{}{
-            "conversation_id": convID,
-            "messages":        messages,
-        }
+			"conversation_id": convID,
+			"messages":        messages,
+		}
 		utils.JsonResponse(w, http.StatusOK, response)
-		
+
 	} else if r.Method == http.MethodPost {
 		// handle new messages sent, does nothing for now
 	} else {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
-		return 
+		return
 	}
 }

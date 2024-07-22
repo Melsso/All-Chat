@@ -4,9 +4,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"playground/datab"
-	"playground/handlers"
-	"playground/utils"
+	"All-Chat/back-end/datab"
+    "All-Chat/back-end/handlers"
+    "All-Chat/back-end/utils"
 )
 
 func main() {
@@ -21,7 +21,7 @@ func main() {
 	http.HandleFunc("/home", handlers.HomeHandler)
 	http.HandleFunc("/create-post", handlers.CreatePostHandler)
 	http.HandleFunc("/like-post", handlers.LikePostHandler)
-	http.HandleFunc("/add-comment", handlers.AddCommentHandler) 
+	http.HandleFunc("/add-comment", handlers.AddCommentHandler)
 	http.HandleFunc("/logout", handlers.LogoutHandler)
 	http.HandleFunc("/add-friend", handlers.AddFriendHandler)
 	http.HandleFunc("/accept-friend", handlers.AcceptFriendHandler)

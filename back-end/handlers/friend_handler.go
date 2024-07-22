@@ -1,51 +1,51 @@
 package handlers
 
 import (
+	"All-Chat/back-end/datab"
 	"encoding/json"
-	"net/http"
 	"fmt"
-	"playground/datab"
-	"playground/models"
-	"playground/utils"
+	"All-Chat/back-end/models"
+	"net/http"
 	"strconv"
+	"All-Chat/back-end/utils"
 )
 
 func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)	
-	if (!ok) {
+	_, ok := session.Values["user_id"].(int)
+	if !ok {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	if r.Method == http.MethodGet {
 		// do stuff
-		return 
+		return
 	}
 
 	var req map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&req)
-    if err != nil {
-        http.Error(w, "Bad Request", http.StatusBadRequest)
-        return
-    }
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
 	userID, okUserID := session.Values["user_id"].(int)
-    friendIDs, okFriendID := req["friend_id"].(string)
+	friendIDs, okFriendID := req["friend_id"].(string)
 	friendID, err := strconv.Atoi(friendIDs)
-	if !okUserID || ! okFriendID || err != nil{
+	if !okUserID || !okFriendID || err != nil {
 		http.Error(w, "Invalid data types", http.StatusBadRequest)
-		return 
+		return
 	}
 	err = datab.Addfriend(userID, friendID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 	response := map[string]string{"message": "Friend Request Sent"}
 	utils.JsonResponse(w, http.StatusOK, response)
@@ -53,44 +53,44 @@ func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)	
-	if (!ok) {
+	_, ok := session.Values["user_id"].(int)
+	if !ok {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
-	
+
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
-	
+
 	if r.Method == http.MethodGet {
 		// do stuff
-		return 
+		return
 	}
-	
+
 	var req map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&req)
-    if err != nil {
+	if err != nil {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
-        return
-    }
+		return
+	}
 	userID, okUserID := session.Values["user_id"].(int)
-    friendIDs, okFriendID := req["friend_id"].(string)
+	friendIDs, okFriendID := req["friend_id"].(string)
 	choice, choiceOk := req["action"].(string)
 
-	friendID, err := strconv.Atoi(friendIDs)	
-	if !okUserID || !okFriendID || !choiceOk || err != nil{
+	friendID, err := strconv.Atoi(friendIDs)
+	if !okUserID || !okFriendID || !choiceOk || err != nil {
 		http.Error(w, "Invalid data types", http.StatusBadRequest)
-		return 
+		return
 	}
 	response := map[string]string{"message": ""}
 	if choice == "y" {
 		err = datab.Acceptfriend(userID, friendID)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return 
+			return
 		}
 		response["message"] = "Friend Request Accepted!"
 	} else {
@@ -102,40 +102,40 @@ func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func DeleteFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)	
-	if (!ok) {
+	_, ok := session.Values["user_id"].(int)
+	if !ok {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	if r.Method == http.MethodGet {
 		// do stuff
-		return 
+		return
 	}
 
 	var req map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&req)
-    if err != nil {
-        http.Error(w, "Bad Request", http.StatusBadRequest)
-        return
-    }
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
 	userID, okUserID := session.Values["user_id"].(int)
-    friendIDs, okFriendID := req["friend_id"].(string)
+	friendIDs, okFriendID := req["friend_id"].(string)
 	friendID, err := strconv.Atoi(friendIDs)
-	if !okUserID || ! okFriendID  || err != nil {
+	if !okUserID || !okFriendID || err != nil {
 		http.Error(w, "Invalid data types", http.StatusBadRequest)
-		return 
+		return
 	}
 	err = datab.Deletefriend(userID, friendID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 	response := map[string]string{"message": "Friend Request Sent"}
 	utils.JsonResponse(w, http.StatusOK, response)
@@ -143,63 +143,63 @@ func DeleteFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func LookUpFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)	
-	if (!ok) {
+	_, ok := session.Values["user_id"].(int)
+	if !ok {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	if r.Method == http.MethodGet {
 		// do stuff
-		return 
+		return
 	}
 
 	var req map[string]interface{}
 	err := json.NewDecoder(r.Body).Decode(&req)
-    if err != nil {
-        http.Error(w, "Bad Request", http.StatusBadRequest)
-        return
-    }
+	if err != nil {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
+		return
+	}
 	target, okTarget := req["user_name"].(string)
 	if !okTarget {
 		http.Error(w, "Invalid data types", http.StatusBadRequest)
-		return 
+		return
 	}
-	
+
 	users, err := datab.LookupUser(target)
 	if err != nil {
 		fmt.Println("db error, ", err)
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 	if users == nil {
 		users = []models.User{}
 	}
 
 	response := map[string]interface{}{
-		"user_list": users, 
+		"user_list": users,
 	}
 	utils.JsonResponse(w, http.StatusOK, response)
 }
 
 func InviteListHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)	
-	if (!ok) {
+	_, ok := session.Values["user_id"].(int)
+	if !ok {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 	}
 
 	// get invite list through Get method, post method will involve accepting/refusing friend request
@@ -208,16 +208,15 @@ func InviteListHandler(w http.ResponseWriter, r *http.Request) {
 		users, err := datab.GetInvites(userid)
 		if err != nil {
 			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return 
+			return
 		}
 		if users == nil {
 			users = []models.User{}
 		}
 		response := map[string]interface{}{
-			"user_list": users, 
+			"user_list": users,
 		}
 		utils.JsonResponse(w, http.StatusOK, response)
 	}
 
 }
-

@@ -1,10 +1,10 @@
 package handlers
 
 import (
+	"All-Chat/back-end/datab"
+	"All-Chat/back-end/models"
 	"net/http"
-	"playground/datab"
-	"playground/utils"
-	"playground/models"
+	"All-Chat/back-end/utils"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
@@ -17,7 +17,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden", http.StatusForbidden)
-		return 
+		return
 
 	}
 	if r.Method == http.MethodGet {
@@ -37,7 +37,7 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	invitelist, err := datab.GetInvites(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
-		return 
+		return
 	}
 	if friends == nil {
 		friends = []models.User{}
@@ -49,12 +49,12 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		invitelist = []models.User{}
 	}
 	data := map[string]interface{}{
-		"friends":	friends,
-		"posts":	posts,
-		"invite":	invitelist,
+		"friends": friends,
+		"posts":   posts,
+		"invite":  invitelist,
 	}
 	w.Header().Set("Cache-Control", "no-store")
-    w.Header().Set("Pragma", "no-cache")
-    w.Header().Set("Expires", "0")
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
 	utils.JsonResponse(w, http.StatusOK, data)
 }

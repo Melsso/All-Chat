@@ -2,7 +2,7 @@ package datab
 
 import (
 	"database/sql"
-	"playground/models"
+	"All-Chat/back-end/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -76,7 +76,7 @@ func LookupUser(username string) ([]models.User, error) {
 		var usrn string
 		if err := rows.Scan(&user.UserID, &user.FirstName, &user.LastName, &usrn); err != nil {
 			return nil, err
-        }
+		}
 		users = append(users, user)
 	}
 	return users, nil

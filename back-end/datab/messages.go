@@ -2,7 +2,7 @@ package datab
 
 import (
 	"database/sql"
-	"playground/models"
+	"All-Chat/back-end/models"
 
 	_ "github.com/go-sql-driver/mysql"
 )
@@ -36,38 +36,38 @@ func StartOrGetConversation(userid, friendid int) (int, error) {
 }
 
 func GetMessages(conversationID int) ([]models.Message, error) {
-    query := `
+	query := `
         SELECT message_id, sender_id, content, created_at, is_read
         FROM messages
         WHERE conversation_id = ?
         ORDER BY created_at
     `
-    rows, err := Db.Query(query, conversationID)
-    if err != nil {
-        return nil, err
-    }
-    defer rows.Close()
+	rows, err := Db.Query(query, conversationID)
+	if err != nil {
+		return nil, err
+	}
+	defer rows.Close()
 
-    var messages []models.Message
-    for rows.Next() {
-        var message models.Message
-        err := rows.Scan(&message.MessageID, &message.SenderID, &message.Content, &message.CreatedAt, &message.IsRead)
-        if err != nil {
-            return nil, err
-        }
-        messages = append(messages, message)
-    }
-    if err = rows.Err(); err != nil {
-        return nil, err
-    }
-    return messages, nil
+	var messages []models.Message
+	for rows.Next() {
+		var message models.Message
+		err := rows.Scan(&message.MessageID, &message.SenderID, &message.Content, &message.CreatedAt, &message.IsRead)
+		if err != nil {
+			return nil, err
+		}
+		messages = append(messages, message)
+	}
+	if err = rows.Err(); err != nil {
+		return nil, err
+	}
+	return messages, nil
 }
 
 func SendMessage(conversationID, senderID int, content string) error {
-    query := `
+	query := `
         INSERT INTO messages (conversation_id, sender_id, content)
         VALUES (?, ?, ?)
     `
-    _, err := Db.Exec(query, conversationID, senderID, content)
-    return err
+	_, err := Db.Exec(query, conversationID, senderID, content)
+	return err
 }

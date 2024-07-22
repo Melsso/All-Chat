@@ -1,4 +1,4 @@
-FROM golang:1.18-alpine
+FROM golang:1.22-alpine AS builder
 
 WORKDIR /app
 
@@ -10,6 +10,15 @@ COPY . .
 
 RUN go build -o main .
 
+FROM alpine:latest
+
+RUN apk --no-cache add ca-certificates openssl
+
+WORKDIR /app
+
+COPY --from=builder /app/main .
+COPY script.sh .
+
 EXPOSE 8080
 
-CMD ["./main"]
+CMD ["sh", "-c", "./script.sh && ./main"]

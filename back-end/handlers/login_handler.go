@@ -4,9 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 
-	"playground/datab"
-	"playground/models"
-	"playground/utils"
+	"All-Chat/back-end/datab"
+	"All-Chat/back-end/models"
+	"All-Chat/back-end/utils"
+
 	"golang.org/x/crypto/bcrypt"
 )
 
@@ -42,7 +43,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	session, _ := utils.Store.Get(r, "session")
 	session.Values["user_id"] = user.UserID
-	session.Values["authenticated"] = true;
+	session.Values["authenticated"] = true
 	session.Save(r, w)
 
 	response := map[string]string{"message": "Login successful"}
@@ -50,12 +51,12 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
-    session, _ := utils.Store.Get(r, "session")
+	session, _ := utils.Store.Get(r, "session")
 
-    session.Options.MaxAge = -1
-    session.Save(r, w)
+	session.Options.MaxAge = -1
+	session.Save(r, w)
 	w.Header().Set("Cache-Control", "no-store")
-    w.Header().Set("Pragma", "no-cache")
-    w.Header().Set("Expires", "0")
-    http.Redirect(w, r, "/login.html", http.StatusSeeOther)
+	w.Header().Set("Pragma", "no-cache")
+	w.Header().Set("Expires", "0")
+	http.Redirect(w, r, "/login.html", http.StatusSeeOther)
 }

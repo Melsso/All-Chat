@@ -2,7 +2,8 @@ package datab
 
 import (
 	"database/sql"
-	"playground/models"
+	"All-Chat/back-end/models"
+
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -11,8 +12,8 @@ func Deletefriend(userid int, friendid int) error {
         DELETE FROM friends 
         WHERE (user_id = ? AND friend_id = ?) OR (user_id = ? AND friend_id = ?)
 	`
-    _, err := Db.Exec(query, userid, friendid, friendid, userid)
-    return err
+	_, err := Db.Exec(query, userid, friendid, friendid, userid)
+	return err
 }
 
 func Acceptfriend(userid int, friendid int) error {
@@ -41,7 +42,7 @@ func Addfriend(userid int, friendid int) error {
         INSERT INTO friends (user_id, friend_id, status) 
         VALUES (?, ?, ?)
     `
-    _, err = Db.Exec(iquery, friendid, userid, models.Pending)
+	_, err = Db.Exec(iquery, friendid, userid, models.Pending)
 	return err
 }
 
