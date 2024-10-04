@@ -10,8 +10,8 @@ import (
 
 func InsertUser(regForm models.RegistrationForm) (sql.Result, error) {
 	query := `
-        INSERT INTO users (first_name, last_name, user_name, date_of_birth, email, password, gender, user_name)
-        VALUES (?, ?, ?, ?, ?, ?, ?, CONCAT(?, user_id))
+        INSERT INTO users (first_name, last_name, date_of_birth, email, password, gender)
+        VALUES (?, ?, ?, ?, ?, ?)
     `
 	result, err := Db.Exec(query, regForm.FirstName, regForm.LastName, regForm.DateOfBirth, regForm.Email, regForm.Password, regForm.Gender)
 	if err != nil {

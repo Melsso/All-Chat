@@ -27,8 +27,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                console.log('Login successful: ', data);
-                window.location.href = '/home';
+                alert('Login successful: ', data);
+                window.location.href = '/static/home.html';
             })
             .catch(error => {
                 console.error('Error: ', error);

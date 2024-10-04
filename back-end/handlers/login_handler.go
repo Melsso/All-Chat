@@ -3,7 +3,7 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-
+	"fmt"
 	"All-Chat/back-end/datab"
 	"All-Chat/back-end/models"
 	"All-Chat/back-end/utils"
@@ -20,7 +20,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
 	}
-
 	var creds models.Credentials
 
 	err := json.NewDecoder(r.Body).Decode(&creds)

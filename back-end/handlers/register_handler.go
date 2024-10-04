@@ -35,6 +35,7 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	if emailExists {
 		http.Error(w, "Email already in use", http.StatusConflict)
 		return
@@ -46,12 +47,13 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	regForm.Password = string(hashedPassword)
-
+	
 	dob, err := time.Parse("2006-01-02", regForm.DateOfBirth)
 	if err != nil {
 		http.Error(w, "Invalid date format for date of birth", http.StatusBadRequest)
 		return
 	}
+	
 	regForm.DateOfBirth = dob.Format("2006-01-02")
 
 	result, err := datab.InsertUser(regForm)
@@ -65,23 +67,26 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to retrieve last insert ID", http.StatusInternalServerError)
 		return
 	}
+	
 	response := map[string]interface{}{
 		"message": "Registration successful",
 		"user_id": userID,
 	}
 
 	str := "session-name" + strconv.FormatInt(userID, 10)
-
+	
 	session, err := utils.Store.Get(r, str)
 	if err != nil {
 		http.Error(w, "Failed to get session", http.StatusInternalServerError)
 		return
 	}
+	
 	session.Values["authenticated"] = true
 	err = session.Save(r, w)
 	if err != nil {
 		http.Error(w, "Failed to save session", http.StatusInternalServerError)
 		return
 	}
+	
 	utils.JsonResponse(w, http.StatusOK, response)
 }
