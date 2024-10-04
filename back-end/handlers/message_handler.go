@@ -11,9 +11,14 @@ import (
 
 func MessageHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
+	auth, ok := session.Values["authenticated"].(bool)
+	if !ok || !auth {
+		http.Error(w, "Forbidden Message: Not authenticated", http.StatusForbidden)
+		return
+	}
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden Message: No user_id", http.StatusForbidden)
 		return
 	}
 	if r.Method == http.MethodGet {

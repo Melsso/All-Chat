@@ -3,7 +3,6 @@ package handlers
 import (
 	"encoding/json"
 	"net/http"
-	"strconv"
 	"time"
 
 	"All-Chat/back-end/datab"
@@ -72,21 +71,5 @@ func RegisterHandler(w http.ResponseWriter, r *http.Request) {
 		"message": "Registration successful",
 		"user_id": userID,
 	}
-
-	str := "session-name" + strconv.FormatInt(userID, 10)
-	
-	session, err := utils.Store.Get(r, str)
-	if err != nil {
-		http.Error(w, "Failed to get session", http.StatusInternalServerError)
-		return
-	}
-	
-	session.Values["authenticated"] = true
-	err = session.Save(r, w)
-	if err != nil {
-		http.Error(w, "Failed to save session", http.StatusInternalServerError)
-		return
-	}
-	
 	utils.JsonResponse(w, http.StatusOK, response)
 }

@@ -12,9 +12,15 @@ import (
 
 func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
+	auth, ok := session.Values["authenticated"].(bool)
+	if !ok || !auth {
+		http.Error(w, "Forbidden Create Post: Not authenticated", http.StatusForbidden)
+		return
+	}
+
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden Create Post: No user_id", http.StatusForbidden)
 		return
 	}
 	var post models.Post
@@ -33,9 +39,14 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 
 func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
+	auth, ok := session.Values["authenticated"].(bool)
+	if !ok || !auth {
+		http.Error(w, "Forbidden Like Post: Not authenticated", http.StatusForbidden)
+		return
+	}
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden Like Post: No user_id", http.StatusForbidden)
 		return
 	}
 	if r.Method != http.MethodPost {
@@ -65,9 +76,14 @@ func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 
 func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
+	auth, ok := session.Values["authenticated"].(bool)
+	if !ok || !auth {
+		http.Error(w, "Forbidden Comment: Not authenticated", http.StatusForbidden)
+		return
+	}
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden Comment: No user_id", http.StatusForbidden)
 		return
 	}
 	if r.Method == http.MethodGet {

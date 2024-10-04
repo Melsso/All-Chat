@@ -9,16 +9,16 @@ import (
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	userID, ok := session.Values["user_id"].(int)
-	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden not authenticated", http.StatusForbidden)
 		return
-
+		
+	}
+	userID, ok := session.Values["user_id"].(int)
+	if !ok {
+		http.Error(w, "Forbidden no user_id", http.StatusForbidden)
+		return
 	}
 	if r.Method == http.MethodGet {
 		http.ServeFile(w, r, "static/home.html")
@@ -54,7 +54,5 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		"invite":  invitelist,
 	}
 	w.Header().Set("Cache-Control", "no-store")
-	w.Header().Set("Pragma", "no-cache")
-	w.Header().Set("Expires", "0")
 	utils.JsonResponse(w, http.StatusOK, data)
 }

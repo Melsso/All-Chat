@@ -12,18 +12,12 @@ import (
 
 func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)
-	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden AddFriend: Not authenticated", http.StatusForbidden)
 		return
 	}
-
+	
 	if r.Method == http.MethodGet {
 		// do stuff
 		return
@@ -53,15 +47,9 @@ func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)
-	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden AcceptFR: Not authenticated", http.StatusForbidden)
 		return
 	}
 
@@ -102,15 +90,9 @@ func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func DeleteFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)
-	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden DeleteFriend: Not authenticated", http.StatusForbidden)
 		return
 	}
 
@@ -143,15 +125,9 @@ func DeleteFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func LookUpFriendHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)
-	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden LFriend: Not authenticated", http.StatusForbidden)
 		return
 	}
 
@@ -190,19 +166,12 @@ func LookUpFriendHandler(w http.ResponseWriter, r *http.Request) {
 
 func InviteListHandler(w http.ResponseWriter, r *http.Request) {
 	session, _ := utils.Store.Get(r, "session")
-	_, ok := session.Values["user_id"].(int)
-	if !ok {
-		http.Error(w, "Forbidden", http.StatusForbidden)
-		return
-	}
-
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		http.Error(w, "Forbidden", http.StatusForbidden)
+		http.Error(w, "Forbidden InvLst: Not authenticated", http.StatusForbidden)
 		return
 	}
 
-	// get invite list through Get method, post method will involve accepting/refusing friend request
 	if r.Method == http.MethodGet {
 		userid, _ := session.Values["user_id"].(int)
 		users, err := datab.GetInvites(userid)
