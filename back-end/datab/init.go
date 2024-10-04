@@ -3,6 +3,7 @@ package datab
 import (
 	"database/sql"
 	"log"
+	"fmt"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -111,9 +112,10 @@ func createMessagesTable() error {
 func InitDB() {
 	var err error
 
-	dsn := "serv:pswd@tcp(127.0.0.1:3306)/chatdb"
+	dsn := "serv:pswd@tcp(db:3306)/chatdb"
 	Db, err = sql.Open("mysql", dsn)
 	if err != nil {
+		fmt.Println("Error; ", err)
 		log.Fatal(err)
 	}
 	_, err = Db.Exec(`CREATE DATABASE IF NOT EXISTS chatdb`)

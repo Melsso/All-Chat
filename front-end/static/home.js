@@ -5,7 +5,7 @@
 // look into friend request sent myb needs manual refresh
 let currentIndex = 0;
 function fetchComments(postId) {
-    fetch(`/add-comment?post_id=${postId}`, {
+    fetch(`http://localhost:8000/add-comment?post_id=${postId}`, {
         method: 'GET',
         headers: {
             'Content-type': 'application/json',
@@ -42,7 +42,7 @@ function fetchComments(postId) {
 }
 
 function fetchLike(postId) {
-    fetch('/like-post', {
+    fetch('http://localhost:8000/like-post', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json'
@@ -64,7 +64,7 @@ function fetchLike(postId) {
 }
 
 function AddNewComment(postId, content) {
-    fetch('/add-comment', {
+    fetch('http://localhost:8000/add-comment', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -173,7 +173,7 @@ function renderInviteList(invites) {
 }
 
 function fetchContents() {
-    fetch('/home', {
+    fetch('http://localhost:8000/home', {
         method: 'POST',
         headers: {
             'Content-type': 'application/json',
@@ -221,7 +221,7 @@ function getActivePostId() {
 }
 
 function createPost(content) {
-    fetch('/create-post', {
+    fetch('http://localhost:8000/create-post', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -336,7 +336,7 @@ function CarouselButtonsHandlers() {
 }
 
 function openMessageWindow(friendId) {
-    fetch(`/messages?friend_id=${friendId}`, {
+    fetch(`http://localhost:8000/messages?friend_id=${friendId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -360,7 +360,7 @@ function openMessageWindow(friendId) {
 }
 
 function sendMessage(conversationId, content) {
-    fetch('/messages', {
+    fetch('http://localhost:8000/messages', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -384,7 +384,7 @@ function sendMessage(conversationId, content) {
 }
 
 function addFriend(friendId) {
-    fetch('/add-friend', {
+    fetch('http://localhost:8000/add-friend', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -405,7 +405,7 @@ function addFriend(friendId) {
 }
 
 function acceptFriend(friendId, choice) {
-    fetch('/accept-friend', {
+    fetch('http://localhost:8000/accept-friend', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -426,7 +426,7 @@ function acceptFriend(friendId, choice) {
 
 // Function to handle deleting a friend
 function deleteFriend(friendId) {
-    fetch('/delete-friend', {
+    fetch('http://localhost:8000/delete-friend', {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',
@@ -447,7 +447,7 @@ function deleteFriend(friendId) {
 }
 
 function lookupUser(username) {
-    fetch(`/lookup-user`, {
+    fetch(`http://localhost:8000/lookup-user`, {
         method: 'POST',
         headers: {
             'Content-Type': 'application/json',

@@ -2,13 +2,18 @@
 
 SESSION_KEY=$(openssl rand -base64 32)
 
-cat <<EOF > .env
-SESSION_KEY=$SESSION_KEY
-DB_HOST=db
-DB_PORT=3306
-DB_USER=myuser
-DB_PASSWORD=mypassword
-DB_NAME=mydb
-EOF
+
+export SESSION_KEY=$SESSION_KEY
+
+while true; do 
+    nc -z db 3306
+    if [ $? -eq 0 ]; then
+        echo "Database is ready!"
+        break 
+    else
+        echo "Waiting for db..."
+        sleep 1
+    fi
+done
 
 exec ./main

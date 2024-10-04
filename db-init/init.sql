@@ -1,0 +1,9 @@
+CREATE DATABASE IF NOT EXISTS chatdb;
+
+USE chatdb;
+
+CREATE USER IF NOT EXISTS 'serv'@'%' IDENTIFIED BY 'pswd';
+
+GRANT ALL PRIVILEGES ON chatdb.* TO 'serv'@'%';
+
+FLUSH PRIVILEGES;

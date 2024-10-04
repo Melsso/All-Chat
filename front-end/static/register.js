@@ -17,7 +17,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetch('/register', {
+            fetch('http://localhost:8000/register', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json',
@@ -39,7 +39,7 @@ document.addEventListener('DOMContentLoaded', function() {
             })
             .then(data => {
                 console.log('Registration successful:', data);
-                window.location.href = '/static/login.html'; // Redirect to login
+                window.location.href = '/static/login.html';
             })
             .catch(error => {
                 console.error('Error:', error);

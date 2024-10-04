@@ -2,17 +2,22 @@ package main
 
 import (
 	"fmt"
+	"log"
 	"net/http"
 
+	"github.com/rs/cors"
+
 	"All-Chat/back-end/datab"
-    "All-Chat/back-end/handlers"
-    "All-Chat/back-end/utils"
+	"All-Chat/back-end/handlers"
+	"All-Chat/back-end/utils"
 )
 
 func main() {
 	datab.InitDB()
 	defer datab.CloseDB()
+
 	utils.Init()
+
 	fs := http.FileServer(http.Dir("static"))
 	http.Handle("/static/", http.StripPrefix("/static/", fs))
 
@@ -33,8 +38,17 @@ func main() {
 		http.Redirect(w, r, "/static/login.html", http.StatusFound)
 	})
 
-	if err := http.ListenAndServe(":8080", nil); err != nil {
-		panic(err)
+	corsHandler := cors.New(cors.Options{
+		AllowedOrigins:   []string{"*"},
+		AllowedHeaders:   []string{"Content-Type", "Authorization"},
+		AllowCredentials: true,
+	})
+
+	handler := corsHandler.Handler(http.DefaultServeMux)
+
+	fmt.Println("Started server on port 8000")
+	if err := http.ListenAndServe(":8000", handler); err != nil {
+		log.Fatalf("Failed to start server: %v", err)
 	}
-	fmt.Println("Started server on port 8080")
+
 }

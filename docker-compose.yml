@@ -1,13 +1,13 @@
 version: '3.8'
 
 services:
+
   db:
-    image: mariadb:latest
+    build:
+      context: ./db-init
     container_name: mariadb
     ports:
-      - "3307:3306" 
-    volumes:
-      - db_data:/var/lib/mysql
+      - "3306:3306"
     networks:
       - app-network
 
@@ -18,26 +18,19 @@ services:
       - "80:80"
     networks:
       - app-network
-
+    depends_on:
+      - backend
+ 
   backend:
     build:
       context: ./back-end
     ports:
-      - "8080:8080"
+      - "8000:8000"
     depends_on:
       - db
-    environment:
-      DB_HOST: db
-      DB_PORT: 3306
-      DB_USER: myuser
-      DB_PASSWORD: mypassword
-      DB_NAME: mydb
     networks:
       - app-network
 
 networks:
   app-network:
     driver: bridge
-
-volumes:
-  db_data:
