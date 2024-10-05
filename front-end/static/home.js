@@ -44,6 +44,7 @@ function fetchComments(postId) {
 function fetchLike(postId) {
     fetch('http://localhost:8000/like-post', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json'
         },
@@ -66,6 +67,7 @@ function fetchLike(postId) {
 function AddNewComment(postId, content) {
     fetch('http://localhost:8000/add-comment', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -175,6 +177,7 @@ function renderInviteList(invites) {
 function fetchContents() {
     fetch('http://localhost:8000/home', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-type': 'application/json',
         },
@@ -199,7 +202,7 @@ function fetchContents() {
 }
 
 function handleFetchError(error) {
-    console.error('Following error occured: ', error);
+    console.error("Following error occured: ", error);
 }
 
 function updateCurrent(direction) {
@@ -223,6 +226,7 @@ function getActivePostId() {
 function createPost(content) {
     fetch('http://localhost:8000/create-post', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -362,6 +366,7 @@ function openMessageWindow(friendId) {
 function sendMessage(conversationId, content) {
     fetch('http://localhost:8000/messages', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -386,6 +391,7 @@ function sendMessage(conversationId, content) {
 function addFriend(friendId) {
     fetch('http://localhost:8000/add-friend', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -407,6 +413,7 @@ function addFriend(friendId) {
 function acceptFriend(friendId, choice) {
     fetch('http://localhost:8000/accept-friend', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -428,6 +435,7 @@ function acceptFriend(friendId, choice) {
 function deleteFriend(friendId) {
     fetch('http://localhost:8000/delete-friend', {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -449,6 +457,7 @@ function deleteFriend(friendId) {
 function lookupUser(username) {
     fetch(`http://localhost:8000/lookup-user`, {
         method: 'POST',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },

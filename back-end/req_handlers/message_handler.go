@@ -1,4 +1,4 @@
-package handlers
+package req_handlers
 
 import (
 	"All-Chat/back-end/datab"
@@ -10,6 +10,14 @@ import (
 	/*"time"*/)
 
 func MessageHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -21,6 +29,7 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Forbidden Message: No user_id", http.StatusForbidden)
 		return
 	}
+
 	if r.Method == http.MethodGet {
 		friendIDs := r.URL.Query().Get("friend_id")
 		if friendIDs == "" {

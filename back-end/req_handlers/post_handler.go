@@ -1,4 +1,4 @@
-package handlers
+package req_handlers
 
 import (
 	"All-Chat/back-end/datab"
@@ -11,18 +11,26 @@ import (
 )
 
 func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden Create Post: Not authenticated", http.StatusForbidden)
 		return
 	}
-
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
 		http.Error(w, "Forbidden Create Post: No user_id", http.StatusForbidden)
 		return
 	}
+	
 	var post models.Post
 	if err := json.NewDecoder(r.Body).Decode(&post); err != nil {
 		http.Error(w, err.Error(), http.StatusBadRequest)
@@ -38,6 +46,14 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LikePostHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -49,6 +65,7 @@ func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Forbidden Like Post: No user_id", http.StatusForbidden)
 		return
 	}
+
 	if r.Method != http.MethodPost {
 		http.Error(w, "Method not allowed", http.StatusMethodNotAllowed)
 		return
@@ -75,6 +92,14 @@ func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+	
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -86,6 +111,7 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Forbidden Comment: No user_id", http.StatusForbidden)
 		return
 	}
+
 	if r.Method == http.MethodGet {
 		postID := r.URL.Query().Get("post_id")
 		if postID == "" {

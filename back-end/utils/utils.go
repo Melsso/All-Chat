@@ -12,6 +12,10 @@ var Store *sessions.CookieStore
 
 func JsonResponse(w http.ResponseWriter, statusCode int, data interface{}) {
     w.Header().Set("Content-Type", "application/json")
+    // w.Header().Set("Access-Control-Allow-Origin", "http://localhost")
+    // w.Header().Set("Access-Control-Allow-Methods", "POST, OPTIONS, GET, DELETE")
+    // w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+    // w.Header().Set("Access-Control-Allow-Credentials", "true")
     w.WriteHeader(statusCode)
     json.NewEncoder(w).Encode(data)
 }
@@ -28,6 +32,6 @@ func Init() {
         MaxAge:   3600,
         HttpOnly: true,
         Secure:   false,
-        SameSite: http.SameSiteStrictMode,
+        SameSite: http.SameSiteNoneMode,
     }
 }

@@ -1,25 +1,37 @@
-package handlers
+package req_handlers
 
 import (
 	"All-Chat/back-end/datab"
 	"All-Chat/back-end/models"
 	"net/http"
 	"All-Chat/back-end/utils"
+	"fmt"
 )
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
+		fmt.Println("Not authed, err: ", ok)
 		http.Error(w, "Forbidden not authenticated", http.StatusForbidden)
 		return
 		
 	}
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
+		fmt.Println("No id:, err: ", ok)
 		http.Error(w, "Forbidden no user_id", http.StatusForbidden)
 		return
 	}
+	
 	if r.Method == http.MethodGet {
 		http.ServeFile(w, r, "static/home.html")
 		return

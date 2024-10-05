@@ -1,4 +1,4 @@
-package handlers
+package req_handlers
 
 import (
 	"All-Chat/back-end/datab"
@@ -11,6 +11,14 @@ import (
 )
 
 func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -46,6 +54,14 @@ func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -89,6 +105,14 @@ func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func DeleteFriendHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+	
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -124,6 +148,14 @@ func DeleteFriendHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func LookUpFriendHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+	
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
@@ -165,6 +197,14 @@ func LookUpFriendHandler(w http.ResponseWriter, r *http.Request) {
 }
 
 func InviteListHandler(w http.ResponseWriter, r *http.Request) {
+	if r.Method == http.MethodOptions {
+		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
+		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.WriteHeader(http.StatusNoContent)
+		return 
+	}
+	
 	session, _ := utils.Store.Get(r, "session")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
