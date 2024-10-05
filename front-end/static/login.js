@@ -13,8 +13,9 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            fetch('http://localhost:8000/login', {
+            fetch('https://localhost:8443/login', {
                 method: 'POST',
+                credentials: 'include',
                 headers: {
                     'Content-Type': 'application/json',
                 },
@@ -27,11 +28,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 return response.json();
             })
             .then(data => {
-                alert('Login successful: ', data);
-                window.location.href = '/static/home.html';
+                alert('Login successful, Welcome!');
+                window.location.href = '/home.html';
             })
             .catch(error => {
-                console.error('Error: ', error);
+                console.error('Error: ', error.message);
                 alert('Login failed. Please try again.');
             });
         });

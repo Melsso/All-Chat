@@ -5,7 +5,7 @@
 // look into friend request sent myb needs manual refresh
 let currentIndex = 0;
 function fetchComments(postId) {
-    fetch(`http://localhost:8000/add-comment?post_id=${postId}`, {
+    fetch(`https://localhost:8443/add-comment?post_id=${postId}`, {
         method: 'GET',
         headers: {
             'Content-type': 'application/json',
@@ -42,7 +42,7 @@ function fetchComments(postId) {
 }
 
 function fetchLike(postId) {
-    fetch('http://localhost:8000/like-post', {
+    fetch('https://localhost:8443/like-post', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -65,7 +65,7 @@ function fetchLike(postId) {
 }
 
 function AddNewComment(postId, content) {
-    fetch('http://localhost:8000/add-comment', {
+    fetch('https://localhost:8443/add-comment', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -175,13 +175,12 @@ function renderInviteList(invites) {
 }
 
 function fetchContents() {
-    fetch('http://localhost:8000/home', {
-        method: 'POST',
+    fetch('https://localhost:8443/home', {
+        method: 'GET',
         credentials: 'include',
         headers: {
             'Content-type': 'application/json',
         },
-        body: '',
     })
     .then(response => {
         if (!response.ok) {
@@ -224,7 +223,7 @@ function getActivePostId() {
 }
 
 function createPost(content) {
-    fetch('http://localhost:8000/create-post', {
+    fetch('https://localhost:8443/create-post', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -340,7 +339,7 @@ function CarouselButtonsHandlers() {
 }
 
 function openMessageWindow(friendId) {
-    fetch(`http://localhost:8000/messages?friend_id=${friendId}`, {
+    fetch(`https://localhost:8443/messages?friend_id=${friendId}`, {
         method: 'GET',
         headers: {
             'Content-Type': 'application/json',
@@ -364,7 +363,7 @@ function openMessageWindow(friendId) {
 }
 
 function sendMessage(conversationId, content) {
-    fetch('http://localhost:8000/messages', {
+    fetch('https://localhost:8443/messages', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -389,7 +388,7 @@ function sendMessage(conversationId, content) {
 }
 
 function addFriend(friendId) {
-    fetch('http://localhost:8000/add-friend', {
+    fetch('https://localhost:8443/add-friend', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -411,7 +410,7 @@ function addFriend(friendId) {
 }
 
 function acceptFriend(friendId, choice) {
-    fetch('http://localhost:8000/accept-friend', {
+    fetch('https://localhost:8443/accept-friend', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -433,7 +432,7 @@ function acceptFriend(friendId, choice) {
 
 // Function to handle deleting a friend
 function deleteFriend(friendId) {
-    fetch('http://localhost:8000/delete-friend', {
+    fetch('https://localhost:8443/delete-friend', {
         method: 'POST',
         credentials: 'include',
         headers: {
@@ -455,7 +454,7 @@ function deleteFriend(friendId) {
 }
 
 function lookupUser(username) {
-    fetch(`http://localhost:8000/lookup-user`, {
+    fetch(`https://localhost:8443/lookup-user`, {
         method: 'POST',
         credentials: 'include',
         headers: {

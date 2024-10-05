@@ -12,9 +12,10 @@ import (
 
 func LoginHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Origin", "https://localhost") 
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.WriteHeader(http.StatusNoContent)
 		return 
 	}
@@ -49,7 +50,7 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
-	session, err := utils.Store.Get(r, "session")
+	session, err := utils.Store.Get(r, "auth")
 	if err != nil {
 		log.Println("Failed to get session:", err)
 		http.Error(w, "Failed to get session", http.StatusInternalServerError)
@@ -62,8 +63,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Failed to save session", http.StatusInternalServerError)
 		return
 	}
-	// After saving the session
-	log.Printf("Session values after login: %v", session.Values)
 
 	response := map[string]string{"message": "Login successful"}
 	utils.JsonResponse(w, http.StatusOK, response)
@@ -71,9 +70,10 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Origin", "https://localhost") 
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.WriteHeader(http.StatusNoContent)
 		return 
 	}
@@ -82,6 +82,5 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 	session.Values["authenticated"] = false;
 	session.Options.MaxAge = -1
 	session.Save(r, w)
-	w.Header().Set("Cache-Control", "no-store")
-	http.Redirect(w, r, "/login.html", http.StatusSeeOther)
+	http.Redirect(w, r, "/static/login.html", http.StatusSeeOther)
 }

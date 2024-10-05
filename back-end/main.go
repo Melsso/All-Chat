@@ -1,7 +1,3 @@
-// 	fs := http.FileServer(http.Dir("static"))
-// 	http.Handle("/static/", http.StripPrefix("/static/", fs))
-
-
 package main
 
 import (
@@ -23,22 +19,22 @@ func main() {
 	
 	r := mux.NewRouter()
 
-	r.HandleFunc("/login", req_handlers.LoginHandler)
-	r.HandleFunc("/register", req_handlers.RegisterHandler)
+	r.HandleFunc("/login", req_handlers.LoginHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/register", req_handlers.RegisterHandler).Methods("GET", "POST", "OPTIONS")
 	r.HandleFunc("/home", req_handlers.HomeHandler)
-	r.HandleFunc("/create-post", req_handlers.CreatePostHandler)
-	r.HandleFunc("/like-post", req_handlers.LikePostHandler)
-	r.HandleFunc("/add-comment", req_handlers.AddCommentHandler)
-	r.HandleFunc("/logout", req_handlers.LogoutHandler)
-	r.HandleFunc("/add-friend", req_handlers.AddFriendHandler)
-	r.HandleFunc("/accept-friend", req_handlers.AcceptFriendHandler)
-	r.HandleFunc("/lookup-user", req_handlers.LookUpFriendHandler)
-	r.HandleFunc("/delete-friend", req_handlers.DeleteFriendHandler)
-	r.HandleFunc("/invite-list", req_handlers.InviteListHandler)
-	r.HandleFunc("/messages", req_handlers.MessageHandler)
+	r.HandleFunc("/create-post", req_handlers.CreatePostHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/like-post", req_handlers.LikePostHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/add-comment", req_handlers.AddCommentHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/logout", req_handlers.LogoutHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/add-friend", req_handlers.AddFriendHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/accept-friend", req_handlers.AcceptFriendHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/lookup-user", req_handlers.LookUpFriendHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/delete-friend", req_handlers.DeleteFriendHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/invite-list", req_handlers.InviteListHandler).Methods("GET", "POST", "OPTIONS")
+	r.HandleFunc("/messages", req_handlers.MessageHandler).Methods("GET", "POST", "OPTIONS")
 	
 	corsHandler := handlers.CORS(
-		handlers.AllowedOrigins([]string{"http://localhost:80", "http://localhost"}),
+		handlers.AllowedOrigins([]string{"https://localhost:443", "https://localhost"}),
 		handlers.AllowedMethods([]string{"OPTIONS", "GET", "POST"}),
 		handlers.AllowedHeaders([]string{"Content-Type", "Authorization", "X-Requested-With"}),
 		handlers.AllowCredentials(),
@@ -46,7 +42,7 @@ func main() {
 
 	handler := corsHandler(r)
 	// Start the server
-	fmt.Println("Started server on port 8000")
-	http.ListenAndServe(":8000", handler)
+	fmt.Println("Started server on port 8443...")
+	http.ListenAndServeTLS(":8443", "localhost.pem", "localhost-key.pem", handler)
 
 }

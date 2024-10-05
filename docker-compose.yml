@@ -5,32 +5,43 @@ services:
   db:
     build:
       context: ./db-init
-    container_name: mariadb
+    container_name: allchat-database
     ports:
       - "3306:3306"
     networks:
-      - app-network
+      - chat-network
+    volumes:
+      - db-data:/var/lib/mysql
+      - ./db-init:/docker-entrypoint-initdb.d/
 
   frontend:
+    container_name: allchat-frontend
     build:
       context: ./front-end
     ports:
-      - "80:80"
+      - "443:443"
     networks:
-      - app-network
+      - chat-network
     depends_on:
       - backend
  
   backend:
+    container_name: allchat-backend
     build:
       context: ./back-end
     ports:
-      - "8000:8000"
+      - "8443:8443"
     depends_on:
       - db
     networks:
-      - app-network
+      - chat-network
+    volumes:
+      - ./back-end/logs:/app/logs
 
 networks:
-  app-network:
+  chat-network:
     driver: bridge
+
+volumes:
+  db-data:
+    driver: local

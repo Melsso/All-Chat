@@ -10,20 +10,25 @@ import (
 
 func HomeHandler(w http.ResponseWriter, r *http.Request) {
 	if r.Method == http.MethodOptions {
-		w.Header().Set("Access-Control-Allow-Origin", "*") 
+		w.Header().Set("Access-Control-Allow-Origin", "https://localhost") 
 		w.Header().Set("Access-Control-Allow-Methods", "GET, POST, OPTIONS")
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Authorization, X-Requested-With")
-		w.WriteHeader(http.StatusNoContent)
+		w.Header().Set("Access-Control-Allow-Credentials", "true")
+		w.WriteHeader(http.StatusNoContent) 
 		return 
 	}
 
-	session, _ := utils.Store.Get(r, "session")
+	session, err := utils.Store.Get(r, "auth") 
+	if err != nil {
+        http.Error(w, "Failed to get session", http.StatusInternalServerError)
+		return 
+	}
+	fmt.Println("header data: %+v", r.Header)
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		fmt.Println("Not authed, err: ", ok)
+		fmt.Println("Authed: ", session.Values["authenticated"], " ///  user_id: ", session.Values["user_id"])
 		http.Error(w, "Forbidden not authenticated", http.StatusForbidden)
 		return
-		
 	}
 	userID, ok := session.Values["user_id"].(int)
 	if !ok {
@@ -32,10 +37,11 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 	
-	if r.Method == http.MethodGet {
-		http.ServeFile(w, r, "static/home.html")
+	if r.Method == http.MethodPost {
+		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return
 	}
+
 	friends, err := datab.GetFriends(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -65,6 +71,5 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		"posts":   posts,
 		"invite":  invitelist,
 	}
-	w.Header().Set("Cache-Control", "no-store")
 	utils.JsonResponse(w, http.StatusOK, data)
 }

@@ -8,7 +8,7 @@ body, html {
     color: #FFFFFF;
     overflow-x: hidden;
     background: #1a1a1a;
-    background: url('background.jpg') no-repeat center center fixed;
+    background: url('/background.jpg') no-repeat center center fixed;
     background-size: cover;
 }
 
