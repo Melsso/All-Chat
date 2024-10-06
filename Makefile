@@ -21,7 +21,7 @@ copy_certs: generate_certs
 	@cp $(CERT_DIR)/* $(BACKEND_CERT_DIR)/
 	@cp $(CERT_DIR)/* $(FRONTEND_CERT_DIR)/
 
-build: copy_certs
+build:
 	@echo "Building all images..."
 	$(DOCKER)-compose build
 

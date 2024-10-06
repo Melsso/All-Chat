@@ -48,7 +48,7 @@ type FriendStatus string
 const (
 	Pending		FriendStatus = "pending"
 	Accepted	FriendStatus = "accepted"
-	blocked		FriendStatus = "blocked"
+	Blocked		FriendStatus = "blocked"
 )
 
 type Friend struct {
@@ -73,4 +73,9 @@ type Conversation struct {
     User1ID        int       `json:"user1_id"`
     User2ID        int       `json:"user2_id"`
     CreatedAt      time.Time `json:"created_at"`
+}
+
+type MsgConversation struct {
+	ConversationID	int `json:"conversation_id"`
+	Content			string `json:"content"`
 }

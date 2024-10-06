@@ -22,7 +22,16 @@ func Acceptfriend(userid int, friendid int) error {
 		SET status = ?
 		WHERE user_id = ? AND friend_id = ? AND status = ?
 	`
-	_, err := Db.Exec(query, models.Accepted, userid, friendid, models.Pending)
+	_, err := Db.Exec(query, models.Accepted, friendid, userid, models.Pending)
+	return err
+}
+
+func RemoveFriendReq(userid int, friendid int) error {
+	query := `
+		DELETE FROM friends
+		WHERE friend_id = ? AND user_id = ? AND status = ?
+	`
+	_, err := Db.Exec(query, friendid, userid, models.Pending)
 	return err
 }
 

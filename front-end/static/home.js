@@ -1,6 +1,12 @@
-// look into acceptFriend and addFriend mostly addFriend 
 // might need to add a cleaner, after logout might need to clean the html
 let currentIndex = 0;
+
+function capitalizeFirstLetterOfEachWord(str) {
+    return str.split(' ')
+        .map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase())
+        .join(' ');
+}
+
 function fetchComments(postId) {
     fetch(`https://localhost:8443/add-comment?post_id=${postId}`, {
         method: 'GET',
@@ -192,7 +198,8 @@ function fetchContents() {
         return response.json();
     })
     .then(data => {
-        if (data.posts) {
+        if (data.posts) {// CHECK REFUSE FRIEND REQUEST BUTTON
+
             renderPosts(data.posts);
             renderFriends(data.friends);
             renderInviteList(data.invite);
@@ -225,6 +232,7 @@ function getActivePostId() {
     }
 }
 
+// Function to create a new post
 function createPost(content) {
     fetch('https://localhost:8443/create-post', {
         method: 'POST',
@@ -247,6 +255,7 @@ function createPost(content) {
     .catch(error => handleFetchError(error));
 }
 
+// Function to logout the user and invalidate the cookie
 function logoutUser() {
     fetch('https://localhost:8443/logout', {
         method: 'POST',
@@ -262,6 +271,7 @@ function logoutUser() {
     });
 }    
 
+// Function that handles all the side buttons and their event listeners
 function SidebarButtonsHandlers() {    
     document.addEventListener('click', function(event) {
         if (event.target.className == 'delete-button') {
@@ -270,7 +280,10 @@ function SidebarButtonsHandlers() {
         
         } else if (event.target.className == 'message-button') {
             personId = event.target.getAttribute('data-friend-id');
-            openMessageWindow(personId);
+            const parentElement = event.target.parentElement;
+            const fullText = parentElement.textContent.trim();
+            personName = fullText.split('✖')[0].trim();
+            openMessageWindow(personId, personName);
         
         } else if (event.target.className == 'search-button') {
             event.preventDefault();
@@ -323,6 +336,7 @@ function SidebarButtonsHandlers() {
     })
 }
 
+// Function that handles all the carousel buttons and their event listeners
 function CarouselButtonsHandlers() {
     const nextButton = document.getElementById('carousel-control-next');
     const prevButton = document.getElementById('carousel-control-prev');
@@ -365,7 +379,8 @@ function CarouselButtonsHandlers() {
     prevButton.addEventListener('click', () => updateCurrent(-1));
 }
 
-function openMessageWindow(friendId) {
+// Function that fetches the messages from backend
+function openMessageWindow(friendId, friendName) {
     fetch(`https://localhost:8443/messages?friend_id=${friendId}`, {
         method: 'GET',
         credentials: 'include',
@@ -375,13 +390,13 @@ function openMessageWindow(friendId) {
     })
     .then(response => {
         if (!response.ok) {
-            return handleFetchError(response);
+            throw new Error('Failed to get messages');
         }
         return response.json();
     })
     .then(data => {
         if (data.messages) {
-            showMessageWindow(data.conversation_id, data.messages);
+            showMessageWindow(data.conversation_id, data.messages, friendId, friendName);
         }
         else {
             console.error('No messages data received:', data);
@@ -390,6 +405,7 @@ function openMessageWindow(friendId) {
     .catch(error => handleFetchError(error));
 }
 
+// Function to send a message to someone
 function sendMessage(conversationId, content) {
     fetch('https://localhost:8443/messages', {
         method: 'POST',
@@ -401,7 +417,7 @@ function sendMessage(conversationId, content) {
     })
     .then(response => {
         if (!response.ok) {
-            return handleFetchError(response);
+            throw new Error('Failed to send message');
         }
         return response.json();
     })
@@ -409,12 +425,13 @@ function sendMessage(conversationId, content) {
         if (data.status === 'sent') {
             console.log('Message sent successfully');
         } else {
-            console.error('Failed to send message:', data);
+            console.error('Failed to send message: ', error.message);
         }
     })
     .catch(error => handleFetchError(error));
 }
 
+// Function to create a friend request
 function addFriend(friendId) {
     fetch('https://localhost:8443/add-friend', {
         method: 'POST',
@@ -432,12 +449,13 @@ function addFriend(friendId) {
         return response.json();
     })
     .then(data => {
-        alert('', response.message);
+        // alert('', data.message);
         fetchContents();
     })
     .catch(error => console.error('Error adding friend:', error.message));
 }
 
+// Fuction to accept a friend request
 function acceptFriend(friendId, choice) {
     fetch('https://localhost:8443/accept-friend', {
         method: 'POST',
@@ -449,12 +467,18 @@ function acceptFriend(friendId, choice) {
     })
     .then(response => {
         if (!response.ok) {
-            alert('Failed to accept friend request...');
+            alert('Failed to process friend request...');
             throw new Error('Failed to accept friend');
         }
         return response.json();
     })
     .then(data => {
+        if (choice == "y") {
+            alert('Friend Accepted.')
+        }
+        else {
+            alert('Friend Denied');
+        }
         fetchContents();
     })
     .catch(error => console.error('Error accepting friend:', error.message));
@@ -484,6 +508,7 @@ function deleteFriend(friendId) {
     .catch(error => console.error('Error deleting friend:', error.message));
 }
 
+// Function to handle user look up, will need to rename the variables, username does not exist, it is missleading
 function lookupUser(username) {
     fetch(`https://localhost:8443/lookup-user`, {
         method: 'POST',
@@ -502,7 +527,6 @@ function lookupUser(username) {
     })
     .then(data => {
         searchResults(data.user_list);
-        // change this, its the wrong function call this one does something else
     })
     .catch(error => console.error('Error looking up user:', error.message));
 }
@@ -532,7 +556,7 @@ function searchResults(results) {
 }
 
 
-function showMessageWindow(conversationId, messages) {
+function showMessageWindow(conversationId, messages, friendId, friendName) {
     // Check if a message window already exists and remove it
     const existingWindow = document.querySelector('.message-window');
     if (existingWindow) {
@@ -553,14 +577,30 @@ function showMessageWindow(conversationId, messages) {
     messageWindow.dataset.conversationId = conversationId;
 
     const header = document.createElement('header');
-    header.textContent = `Conversation ID: ${conversationId}`;
+    header.textContent = `${friendName}`;
+    header.style.color = '#00008B';
+    header.style.textAlign = 'center'; 
+    header.style.textTransform = 'uppercase';
     messageWindow.appendChild(header);
 
     const messageContainer = document.createElement('div');
     messageContainer.className = 'message-container';
     messages.forEach(message => {
         const messageElement = document.createElement('p');
-        messageElement.textContent = `${message.sender}: ${message.content}`;
+        
+        const senderName = document.createElement('span');
+        senderName.style.color = '#00008B';
+        senderName.style.fontWeight = 'bold';
+        if (message.sender_id == friendId) {
+            senderName.textContent = `${capitalizeFirstLetterOfEachWord(friendName)}: `;
+        }
+        else {
+            senderName.textContent = `You: `;
+        }
+        messageElement.appendChild(senderName);
+        messageElement.appendChild(document.createTextNode(message.content));
+
+        messageElement.style.color = 'black';
         messageContainer.appendChild(messageElement);
     });
     messageWindow.appendChild(messageContainer);
@@ -578,6 +618,7 @@ function showMessageWindow(conversationId, messages) {
             return;
         }
         sendMessage(conversationId, content);
+        openMessageWindow(friendId, friendName);
     });
     messageWindow.appendChild(sendButton);
 

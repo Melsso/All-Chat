@@ -6,6 +6,7 @@ import (
 	"All-Chat/back-end/models"
 	"net/http"
 	"strconv"
+	"encoding/json"
 	"All-Chat/back-end/utils"
 	/*"time"*/)
 
@@ -39,6 +40,7 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		friend_id, err := strconv.Atoi(friendIDs)
 		if err != nil {
+			fmt.Println("friend id error: ", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -50,6 +52,7 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 		}
 		messages, err := datab.GetMessages(convID)
 		if err != nil {
+			fmt.Println("getmsg error: ", err)
 			http.Error(w, err.Error(), http.StatusInternalServerError)
 			return
 		}
@@ -63,7 +66,25 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 		utils.JsonResponse(w, http.StatusOK, response)
 
 	} else if r.Method == http.MethodPost {
-		// handle new messages sent, does nothing for now
+		var msgConv models.MsgConversation
+		err := json.NewDecoder(r.Body).Decode(&msgConv)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusBadRequest)
+			return 
+		}
+		
+		er := datab.SendMessage(msgConv.ConversationID, userID, msgConv.Content)
+		if er != nil {
+			fmt.Println("Could not save msg on db: ", er.Error())
+			http.Error(w, er.Error(), http.StatusInternalServerError)
+			return 	
+		}
+
+		response := map[string]interface{}{
+			"status": "sent",
+		}
+		utils.JsonResponse(w, http.StatusOK, response)
+
 	} else {
 		http.Error(w, "Bad Request", http.StatusBadRequest)
 		return

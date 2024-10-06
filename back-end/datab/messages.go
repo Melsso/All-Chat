@@ -3,7 +3,9 @@ package datab
 import (
 	"database/sql"
 	"All-Chat/back-end/models"
-
+	"time"
+	"fmt"
+	
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -51,10 +53,18 @@ func GetMessages(conversationID int) ([]models.Message, error) {
 	var messages []models.Message
 	for rows.Next() {
 		var message models.Message
-		err := rows.Scan(&message.MessageID, &message.SenderID, &message.Content, &message.CreatedAt, &message.IsRead)
+		var createdAtRaw []uint8
+
+		err := rows.Scan(&message.MessageID, &message.SenderID, &message.Content, &createdAtRaw, &message.IsRead)
 		if err != nil {
 			return nil, err
 		}
+
+		createdAtString := string(createdAtRaw)
+		message.CreatedAt, err = time.Parse("2006-01-02 15:04:05", createdAtString)
+        if err != nil {
+            return nil, fmt.Errorf("failed to parse created_at: %v", err)
+        }
 		messages = append(messages, message)
 	}
 	if err = rows.Err(); err != nil {
@@ -69,5 +79,8 @@ func SendMessage(conversationID, senderID int, content string) error {
         VALUES (?, ?, ?)
     `
 	_, err := Db.Exec(query, conversationID, senderID, content)
-	return err
+	if err != nil {
+		return err
+	}
+	return nil
 }

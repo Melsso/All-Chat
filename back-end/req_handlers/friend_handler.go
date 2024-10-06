@@ -112,7 +112,12 @@ func AcceptFriendHandler(w http.ResponseWriter, r *http.Request) {
 		response["message"] = "Friend Request Accepted!"
 	} else {
 		// here remove the invite from the database
-		response["message"] = "Friend Request Refused"
+		err = datab.RemoveFriendReq(userID, friendID)
+		if err != nil {
+			http.Error(w, err.Error(), http.StatusInternalServerError)
+			return
+		}
+		response["message"] = "Friend Request Refused."
 	}
 	utils.JsonResponse(w, http.StatusOK, response)
 }
