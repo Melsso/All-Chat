@@ -1,14 +1,27 @@
-.PHONY: all build run fclean re start stop list
+.PHONY: all build run fclean re start stop list generate_certs copy_certs
 
 COMPOSE_FILE = docker-compose.yml
 # DOCKER = docker
 
 DOCKER = sudo docker
 
+CERT_DIR = $(HOME)/.local/share/mkcert
+BACKEND_CERT_DIR = ./back-end
+FRONTEND_CERT_DIR = ./front-end
+CERTS = localhost
 
 all: run
 
-build:
+generate_certs: 
+	@echo "Generating certificates..."
+	mkcert $(CERTS)
+
+copy_certs: generate_certs
+	@echo "Copying certificates..."
+	@cp $(CERT_DIR)/* $(BACKEND_CERT_DIR)/
+	@cp $(CERT_DIR)/* $(FRONTEND_CERT_DIR)/
+
+build: copy_certs
 	@echo "Building all images..."
 	$(DOCKER)-compose build
 
