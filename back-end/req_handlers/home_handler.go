@@ -23,10 +23,8 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
         http.Error(w, "Failed to get session", http.StatusInternalServerError)
 		return 
 	}
-	fmt.Println("header data: %+v", r.Header)
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
-		fmt.Println("Authed: ", session.Values["authenticated"], " ///  user_id: ", session.Values["user_id"])
 		http.Error(w, "Forbidden not authenticated", http.StatusForbidden)
 		return
 	}
@@ -42,16 +40,20 @@ func HomeHandler(w http.ResponseWriter, r *http.Request) {
 		return
 	}
 
+
 	friends, err := datab.GetFriends(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
 	posts, err := datab.GetPosts(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
+
+	
 	invitelist, err := datab.GetInvites(userID)
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)

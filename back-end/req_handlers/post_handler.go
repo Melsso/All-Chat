@@ -20,7 +20,7 @@ func CreatePostHandler(w http.ResponseWriter, r *http.Request) {
 		return 
 	}
 
-	session, _ := utils.Store.Get(r, "session")
+	session, _ := utils.Store.Get(r, "auth")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden Create Post: Not authenticated", http.StatusForbidden)
@@ -56,7 +56,7 @@ func LikePostHandler(w http.ResponseWriter, r *http.Request) {
 		return 
 	}
 
-	session, _ := utils.Store.Get(r, "session")
+	session, _ := utils.Store.Get(r, "auth")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden Like Post: Not authenticated", http.StatusForbidden)
@@ -103,7 +103,7 @@ func AddCommentHandler(w http.ResponseWriter, r *http.Request) {
 		return 
 	}
 	
-	session, _ := utils.Store.Get(r, "session")
+	session, _ := utils.Store.Get(r, "auth")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden Comment: Not authenticated", http.StatusForbidden)

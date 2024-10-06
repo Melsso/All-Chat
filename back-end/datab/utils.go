@@ -3,7 +3,7 @@ package datab
 import (
 	"database/sql"
 	"All-Chat/back-end/models"
-
+	"strings"
 	_ "github.com/go-sql-driver/mysql"
 )
 
@@ -61,20 +61,46 @@ func GetUserById(userID int) (models.User, error) {
 func LookupUser(username string) ([]models.User, error) {
 	var users []models.User
 
-	query := `
-		SELECT user_id, first_name, last_name ,user_name
-		FROM users
-		WHERE user_name LIKE ?
-	`
-	rows, err := Db.Query(query, "%"+username+"%")
+	words := strings.Fields(username)
+	
+	if len(words) == 0 {
+		return nil, nil
+	}
+
+	var query string
+	var args []interface{}
+
+	if len(words) == 1 {
+		query = `
+			SELECT user_id, first_name, last_name
+			FROM users
+			WHERE first_name LIKE ? OR last_name LIKE ?
+		`
+		args = []interface{}{"%" + words[0] + "%", "%" + words[0] + "%"}
+	} else {
+		lname := words[0]
+		fname := strings.Join(words[1:], " ")
+		query = `
+			SLECT user_id, first_name, last_name
+			FROM users
+			WHERE (first_name LIKE ? AND last_name LIKE ?)
+			OR (first_name LIKE ? AND last_name LIKE ?)
+		`
+		args = []interface{}{
+			"%" + fname + "%", "%" + lname + "%",
+			"%" + lname + "%", "%" + fname + "%",
+		}
+	}
+
+	rows, err := Db.Query(query, args...)
 	if err != nil {
 		return nil, err
 	}
 	defer rows.Close()
+
 	for rows.Next() {
 		var user models.User
-		var usrn string
-		if err := rows.Scan(&user.UserID, &user.FirstName, &user.LastName, &usrn); err != nil {
+		if err := rows.Scan(&user.UserID, &user.FirstName, &user.LastName); err != nil {
 			return nil, err
 		}
 		users = append(users, user)

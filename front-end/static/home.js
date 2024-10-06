@@ -1,12 +1,10 @@
 // look into acceptFriend and addFriend mostly addFriend 
-
-// need to add a post submission system, thinking about pushing it on the sidebar because why not
-// look into backend delete-friend return value is odd?
-// look into friend request sent myb needs manual refresh
+// might need to add a cleaner, after logout might need to clean the html
 let currentIndex = 0;
 function fetchComments(postId) {
     fetch(`https://localhost:8443/add-comment?post_id=${postId}`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-type': 'application/json',
         },
@@ -20,6 +18,7 @@ function fetchComments(postId) {
     .then(data => {
         const commentSection = document.getElementById(`comments`);
         commentSection.innerHTML = '';
+
         if (data.comments && data.comments.length > 0) {
             data.comments.forEach(comment => {
                 const commentField = document.createElement('article');
@@ -84,7 +83,7 @@ function AddNewComment(postId, content) {
             fetchComments(postId);
         }
         else {
-            console.error('Failed to add comment');
+            alert('Failed to add comment');
         }
     })
     .catch(error => handleFetchError(error));
@@ -93,6 +92,10 @@ function AddNewComment(postId, content) {
 function renderPosts(posts) {
     const postsContainer = document.getElementById('posts');
     postsContainer.innerHTML = '';
+    if (posts.length === 0) {
+        postsContainer.innerHTML = '<p>No posts available for now</p>';
+        return;
+    }
     posts.forEach((post, index) => {
         const divPost = document.createElement('div');
         divPost.classList.add('post');
@@ -201,7 +204,7 @@ function fetchContents() {
 }
 
 function handleFetchError(error) {
-    console.error("Following error occured: ", error);
+    console.error("Following error occured: ", error.message);
 }
 
 function updateCurrent(direction) {
@@ -244,6 +247,21 @@ function createPost(content) {
     .catch(error => handleFetchError(error));
 }
 
+function logoutUser() {
+    fetch('https://localhost:8443/logout', {
+        method: 'POST',
+        credentials: 'include',
+        headers: {
+            'Content-Type': 'application/json',
+        }
+    }).then(response => {
+        if (response.ok) {
+            document.cookie = "auth" + '=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/; domain=example.com;';
+            window.location.href = '/login.html';
+        }
+    });
+}    
+
 function SidebarButtonsHandlers() {    
     document.addEventListener('click', function(event) {
         if (event.target.className == 'delete-button') {
@@ -262,7 +280,7 @@ function SidebarButtonsHandlers() {
                 lookupUser(uname);
                 unameText.value = '';
             } else {
-                alert('Please enter a username');
+                alert('Please enter a name');
             }
         
         } else if (event.target.className == 'accept-button') {
@@ -276,6 +294,11 @@ function SidebarButtonsHandlers() {
         } else if (event.target.className == 'add-ser-button') {
             personId = event.target.getAttribute('data-result-id');
             addFriend(personId);
+            const btn = event.target;
+            btn.textContent = 'SENT!';
+            btn.disabled = true;
+            fetchContents();
+
         } else if (event.target.id == 'submit-post') {
             const content = document.getElementById('post-post').value;
             if (!content) {
@@ -285,13 +308,17 @@ function SidebarButtonsHandlers() {
             const element = document.getElementById('post-post');
             element.value = '';
             createPost(content);
+        
         } else if (event.target.id == 'dark-mode') {
             document.body.classList.toggle('invert-mode');
             if (document.body.classList.contains('invert-mode')) {
-                modeToggleButton.textContent = 'Default Mode';
+                event.target.textContent = 'Default Mode';
             } else {
-                modeToggleButton.textContent = 'Invert Colors';
+                event.target.textContent = 'Invert Colors';
             }
+        
+        } else if (event.target.id == 'logout-link') {
+           logoutUser();
         }
     })
 }
@@ -341,6 +368,7 @@ function CarouselButtonsHandlers() {
 function openMessageWindow(friendId) {
     fetch(`https://localhost:8443/messages?friend_id=${friendId}`, {
         method: 'GET',
+        credentials: 'include',
         headers: {
             'Content-Type': 'application/json',
         },
@@ -398,6 +426,7 @@ function addFriend(friendId) {
     })
     .then(response => {
         if (!response.ok) {
+            alert('Failed to add friend...');
             throw new Error('Failed to add friend');
         }
         return response.json();
@@ -406,7 +435,7 @@ function addFriend(friendId) {
         alert('friend request sent!');
         fetchContents();
     })
-    .catch(error => console.error('Error adding friend:', error));
+    .catch(error => console.error('Error adding friend:', error.message));
 }
 
 function acceptFriend(friendId, choice) {
@@ -420,6 +449,7 @@ function acceptFriend(friendId, choice) {
     })
     .then(response => {
         if (!response.ok) {
+            alert('Failed to accept friend request...');
             throw new Error('Failed to accept friend');
         }
         return response.json();
@@ -427,7 +457,7 @@ function acceptFriend(friendId, choice) {
     .then(data => {
         fetchContents();
     })
-    .catch(error => console.error('Error accepting friend:', error));
+    .catch(error => console.error('Error accepting friend:', error.message));
 }
 
 // Function to handle deleting a friend
@@ -442,15 +472,16 @@ function deleteFriend(friendId) {
     })
     .then(response => {
         if (!response.ok) {
+            alert('Failed to delete friend');
             throw new Error('Failed to delete friend');
         }
         return response.json();
     })
     .then(data => {
-        console.log('Friend deleted:', data.message);
+        alert('Friend deleted.');
         fetchContents();
     })
-    .catch(error => console.error('Error deleting friend:', error));
+    .catch(error => console.error('Error deleting friend:', error.message));
 }
 
 function lookupUser(username) {
@@ -473,12 +504,13 @@ function lookupUser(username) {
         searchResults(data.user_list);
         // change this, its the wrong function call this one does something else
     })
-    .catch(error => console.error('Error looking up user:', error));
+    .catch(error => console.error('Error looking up user:', error.message));
 }
 
 function searchResults(results) {
     const resContainer = document.getElementById('search-result');
     resContainer.innerHTML = '';
+
     if (results && results.length > 0) {
         results.forEach(result => {
             const li = document.createElement('li');

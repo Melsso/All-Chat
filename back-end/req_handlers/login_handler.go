@@ -3,7 +3,6 @@ package req_handlers
 import (
 	"encoding/json"
 	"net/http"
-	"log"
 	"All-Chat/back-end/datab"
 	"All-Chat/back-end/models"
 	"All-Chat/back-end/utils"
@@ -52,7 +51,6 @@ func LoginHandler(w http.ResponseWriter, r *http.Request) {
 
 	session, err := utils.Store.Get(r, "auth")
 	if err != nil {
-		log.Println("Failed to get session:", err)
 		http.Error(w, "Failed to get session", http.StatusInternalServerError)
 		return
 	}
@@ -78,9 +76,10 @@ func LogoutHandler(w http.ResponseWriter, r *http.Request) {
 		return 
 	}
 
-	session, _ := utils.Store.Get(r, "session")
+	session, _ := utils.Store.Get(r, "auth")
 	session.Values["authenticated"] = false;
 	session.Options.MaxAge = -1
 	session.Save(r, w)
-	http.Redirect(w, r, "/static/login.html", http.StatusSeeOther)
+	response := map[string]string{"message": "Log out successful."}
+	utils.JsonResponse(w, http.StatusOK, response)
 }

@@ -19,7 +19,7 @@ func MessageHandler(w http.ResponseWriter, r *http.Request) {
 		return 
 	}
 
-	session, _ := utils.Store.Get(r, "session")
+	session, _ := utils.Store.Get(r, "auth")
 	auth, ok := session.Values["authenticated"].(bool)
 	if !ok || !auth {
 		http.Error(w, "Forbidden Message: Not authenticated", http.StatusForbidden)

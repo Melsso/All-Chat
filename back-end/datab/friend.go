@@ -28,22 +28,31 @@ func Acceptfriend(userid int, friendid int) error {
 
 func Addfriend(userid int, friendid int) error {
 	var status string
-	query := `SELECT status FROM friends WHERE (user_id = ? AND friend_id = ?) OR (friend_id = ? AND user_id = ?)`
+	query := `SELECT status 
+		FROM friends 
+		WHERE (user_id = ? AND friend_id = ?) 
+		OR (friend_id = ? AND user_id = ?)
+	`
 	err := Db.QueryRow(query, userid, friendid, friendid, userid).Scan(&status)
-	if err == nil {
-		if status == "pending" || status == "accepted" {
-			return nil
-		}
-	} else if err != sql.ErrNoRows {
+	if err == sql.ErrNoRows {
+
+		iquery := `
+			INSERT INTO friends (user_id, friend_id, status) 
+			VALUES (?, ?, ?)
+		`
+		_, err = Db.Exec(iquery, friendid, userid, models.Pending)
+		return err
+	}
+	
+	if err != nil {
 		return err
 	}
 
-	iquery := `
-        INSERT INTO friends (user_id, friend_id, status) 
-        VALUES (?, ?, ?)
-    `
-	_, err = Db.Exec(iquery, friendid, userid, models.Pending)
-	return err
+	if status == "pending" || status == "accepted" {
+		return nil
+	}
+
+	return nil
 }
 
 func GetInvites(userid int) ([]models.User, error) {
