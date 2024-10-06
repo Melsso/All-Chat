@@ -26,7 +26,7 @@ func Acceptfriend(userid int, friendid int) error {
 	return err
 }
 
-func Addfriend(userid int, friendid int) error {
+func Addfriend(userid int, friendid int) (string, error) {
 	var status string
 	query := `SELECT status 
 		FROM friends 
@@ -40,19 +40,23 @@ func Addfriend(userid int, friendid int) error {
 			INSERT INTO friends (user_id, friend_id, status) 
 			VALUES (?, ?, ?)
 		`
-		_, err = Db.Exec(iquery, friendid, userid, models.Pending)
-		return err
+		_, err = Db.Exec(iquery, userid, friendid, models.Pending)
+		if err != nil {
+			return "", err
+		}
+		return "pending", err
 	}
 	
 	if err != nil {
-		return err
+		return "", err
 	}
 
 	if status == "pending" || status == "accepted" {
-		return nil
+		return status, nil
 	}
 
-	return nil
+
+	return "", nil
 }
 
 func GetInvites(userid int) ([]models.User, error) {

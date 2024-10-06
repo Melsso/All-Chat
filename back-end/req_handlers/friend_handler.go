@@ -46,13 +46,22 @@ func AddFriendHandler(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, "Invalid data types", http.StatusBadRequest)
 		return
 	}
+	response := map[string]string{}
 
-	err = datab.Addfriend(userID, friendID)
+	status, err := datab.Addfriend(userID, friendID)
 	if err != nil {
+		fmt.Println("error : ", err.Error())
 		http.Error(w, err.Error(), http.StatusInternalServerError)
 		return
 	}
-	response := map[string]string{"message": "Friend Request Sent"}
+	if status == "pending" {
+		response["message"] = "Friend Request Already Sent!"
+	} else if status == "accepted" {
+		response["message"] = "You Are Already Friends!"
+	} else {
+		response["message"] = "Friend Request Sent!"
+	}
+
 	utils.JsonResponse(w, http.StatusOK, response)
 }
 

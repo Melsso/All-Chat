@@ -297,7 +297,7 @@ function SidebarButtonsHandlers() {
             const btn = event.target;
             btn.textContent = 'SENT!';
             btn.disabled = true;
-            fetchContents();
+            // fetchContents();
 
         } else if (event.target.id == 'submit-post') {
             const content = document.getElementById('post-post').value;
@@ -432,7 +432,7 @@ function addFriend(friendId) {
         return response.json();
     })
     .then(data => {
-        alert('friend request sent!');
+        alert('', response.message);
         fetchContents();
     })
     .catch(error => console.error('Error adding friend:', error.message));
